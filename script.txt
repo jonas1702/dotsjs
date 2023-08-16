@@ -1,0 +1,101 @@
+import {Particle} from './particle.js'
+import {Canvas} from './canvas.js'
+
+const canvas1 = document.querySelector('.canvas')
+const canvas2 = document.querySelector('.canvas2')
+const canvas3 = document.querySelector('.canvas3')
+let ctx = canvas1.getContext('2d')
+
+const sizes = {
+    width: 600,
+    height: 400
+}
+
+const mouse = {
+    x: null,
+    y: null,
+    radius: 80
+}
+
+const grid = {
+    rows: sizes.height / 35,
+    columns: sizes.width / 35,
+    padding: 20
+}
+
+canvas1.width = sizes.width
+canvas1.height = sizes.height 
+
+canvas1.style.background = '#fff'
+
+/* creates array for all particles */
+let particleArray = []
+let cellWidth = (canvas1.width - 2 * grid.padding) / grid.columns
+let cellHeight = (canvas1.height - 2 * grid.padding) / grid.rows
+
+/* initializes particle generation */
+function init() {
+    /* generates grid */
+    for (let i = 0; i <= grid.columns; i++) {
+        for (let j = 0; j <= grid.rows; j++) {
+            
+            const particlePos = {
+                x: grid.padding + i * cellWidth,
+                y: grid.padding + j * cellHeight
+            }
+            let particle = new Particle(particlePos.x, particlePos.y, ctx)
+            particleArray.push(particle)
+        }  
+    }
+}
+init()
+
+/* updates particle generation */
+let lastUpdate = Date.now()
+
+function update() {
+    let now = Date.now()
+    let dt = (now - lastUpdate) / 25
+    lastUpdate = now
+
+    ctx.clearRect(0, 0, canvas1.width, canvas1.height)
+    /* calles move function for each particle */
+    particleArray.forEach(particle => {
+        particle.move(mouse, dt)
+        particle.draw(ctx)
+    })
+
+    
+    requestAnimationFrame(update)
+}
+window.requestAnimationFrame(update)
+
+document.addEventListener('mousemove', (evt) => {
+    mousePos(evt)
+})
+
+/* calculates a random value between two values*/
+function getRandom(min, max) {
+    return Math.random() * (max - min) + min;
+}
+
+/* returns x and y position of mouse within a 1:1 canvas*/
+const mousePos = (evt) => {
+    let canvasSize = canvas1.getBoundingClientRect()
+    mouse.x = evt.clientX - canvasSize.left
+    mouse.y = evt.clientY - canvasSize.top
+    return mouse
+}
+
+
+// canvas
+
+let canvas = new Canvas(canvas2, 600, 400)
+let canvas5 = new Canvas(canvas3, 200, 800)
+
+function update2() {
+    canvas.update()
+    canvas5.update()
+    requestAnimationFrame(update2)
+}
+window.requestAnimationFrame(update2)
