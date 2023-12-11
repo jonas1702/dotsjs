@@ -1,9 +1,10 @@
-import {Canvas} from './canvas.js'
+import {Canvas, CanvasRandom} from './canvas.js'
+
 const canvas1 = document.querySelector('.canvas2')
 const canvas2 = document.querySelector('.canvas3')
 
 let canvas1Class = new Canvas(canvas1, 600, 400)
-let canvas2Class = new Canvas(canvas2, 200, 800)
+let canvas2Class = new CanvasRandom(canvas2, 500, 500, 900)
 
 // canvas
 

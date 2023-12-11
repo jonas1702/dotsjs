@@ -4,7 +4,7 @@ export class Particle {
         this.y = y
         this.startX = this.x
         this.startY = this.y
-        this.size = 3
+        this.size = 1
         this.velocity = (Math.random() * (1 - .5) + .5)
 
         this.color = {
